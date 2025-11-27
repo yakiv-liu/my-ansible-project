@@ -1,12 +1,9 @@
 Welcome to {{ inventory_hostname }}
 
-Server Role: 
-{% if inventory_hostname in groups['webservers'] %}
-  Web Server
-{% elif inventory_hostname in groups['dbservers'] %}
-  Database Server
-{% else %}
-  General Purpose Server
-{% endif %}
-
+Python Version: {{ ansible_python_version }}
 Managed by Ansible - {{ ansible_date_time.iso8601 }}
+
+Server Groups:
+{% for group in group_names %}
+  - {{ group }}
+{% endfor %}

@@ -1,6 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from ansible.module_utils.basic import AnsibleModule
+
 
 def main():
     module = AnsibleModule(
@@ -9,18 +11,23 @@ def main():
             repeat=dict(type='int', default=1)
         )
     )
-    
+
     message = module.params['message']
     repeat = module.params['repeat']
-    
+
+    # Python 2.7 兼容的字符串处理
+    if isinstance(message, unicode):
+        message = message.encode('utf-8')
+
     result = dict(
         changed=False,
         original_message=message,
         repeated_message=message * repeat,
         message="Task completed successfully"
     )
-    
+
     module.exit_json(**result)
+
 
 if __name__ == '__main__':
     main()

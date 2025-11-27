@@ -1,10 +1,10 @@
 [webservers]
-web1 ansible_host=192.168.233.4
-web2 ansible_host=192.168.233.5
+web1 ansible_host=192.168.233.4 ansible_python_interpreter=/usr/bin/python
+web2 ansible_host=192.168.233.5 ansible_python_interpreter=/usr/bin/python
 
 [dbservers]
-db1 ansible_host=192.168.233.5
+db1 ansible_host=192.168.233.5 ansible_python_interpreter=/usr/bin/python
 
 [all:vars]
 ansible_connection=ssh
-ansible_python_interpreter=/usr/bin/python3
+ansible_python_interpreter=/usr/bin/python
