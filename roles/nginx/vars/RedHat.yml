@@ -1,11 +1,9 @@
 ---
-# 角色特定变量
-nginx_version: "1.18"
-log_path: "/var/log/nginx"
+# CentOS/RedHat 系统的 Nginx 变量
 nginx_package: nginx
 nginx_service: nginx
 nginx_config_path: /etc/nginx/nginx.conf
 nginx_html_path: /usr/share/nginx/html
 nginx_user: nginx
 nginx_group: nginx
-epel_required: false
+epel_required: true

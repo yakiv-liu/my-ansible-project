@@ -1,0 +1,8 @@
+---
+nginx_package: nginx
+nginx_service: nginx
+nginx_config_path: /etc/nginx/nginx.conf
+nginx_html_path: /var/www/html
+nginx_user: www-data
+nginx_group: www-data
+epel_required: false

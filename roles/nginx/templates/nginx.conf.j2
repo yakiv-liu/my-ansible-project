@@ -1,25 +1,48 @@
-user www-data;
-worker_processes {{ max_workers }};
+user {{ nginx_user | default('nginx') }};
+worker_processes {{ max_workers | default('auto') }};
+error_log /var/log/nginx/error.log;
 pid /run/nginx.pid;
 
 events {
-    worker_connections 768;
+    worker_connections 1024;
 }
 
 http {
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-    keepalive_timeout 65;
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
     types_hash_max_size 2048;
 
+    # 日志格式
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
     server {
-        listen {{ nginx_port }};
-        server_name {{ server_name }};
+        # 关键：使用变量配置端口
+        listen       {{ nginx_port | default(80) }} default_server;
+        listen       [::]:{{ nginx_port | default(80) }} default_server;
         
+        server_name  {{ server_name | default('_') }};
+        root         {{ nginx_html_path | default('/usr/share/nginx/html') }};
+        index        index.html index.htm;
+
         location / {
-            root /var/www/html;
-            index index.html;
+            try_files $uri $uri/ =404;
+        }
+
+        error_page 404 /404.html;
+        location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
         }
     }
 }

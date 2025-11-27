@@ -1,30 +1,71 @@
 ---
-- name: 安装 Nginx
-  apt:
-    name: nginx
-    state: present
-    update_cache: yes
-  when: not ansible_check_mode  # 在检查模式下跳过
-  notify: restart nginx
+- name: 设置 Nginx 变量（基于操作系统）
+  set_fact:
+    nginx_package: "{{ 'nginx' }}"
+    nginx_service: "{{ 'nginx' }}"
+    nginx_config_path: "{{ '/etc/nginx/nginx.conf' }}"
+    nginx_html_path: "{{ 
+      ('/usr/share/nginx/html' if ansible_os_family == 'RedHat' else '/var/www/html') 
+    }}"
+    nginx_user: "{{ 
+      ('nginx' if ansible_os_family == 'RedHat' else 'www-data') 
+    }}"
+    nginx_group: "{{ 
+      ('nginx' if ansible_os_family == 'RedHat' else 'www-data') 
+    }}"
 
-- name: 模拟安装 Nginx (检查模式)
-  debug:
-    msg: "在检查模式下跳过 Nginx 安装，实际运行时会安装"
-  when: ansible_check_mode  # 只在检查模式下显示
+- name: 安装 EPEL 仓库 (CentOS/RedHat)
+  yum:
+    name: epel-release
+    state: present
+  when: ansible_os_family == "RedHat"
+  become: yes
+
+- name: 安装 Nginx
+  package:
+    name: "{{ nginx_package }}"
+    state: present
+  become: yes
+
+- name: 确保 Nginx 用户存在
+  user:
+    name: "{{ nginx_user }}"
+    state: present
+    system: yes
+    create_home: no
+  become: yes
+
+- name: 创建 Nginx HTML 目录
+  file:
+    path: "{{ nginx_html_path }}"
+    state: directory
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_group }}"
+    mode: '0755'
+  become: yes
 
 - name: 复制 Nginx 配置文件
   template:
     src: nginx.conf.j2
-    dest: /etc/nginx/nginx.conf
-  notify: restart nginx
+    dest: "{{ nginx_config_path }}"
+    backup: yes
+  notify: 
+    - check nginx config
+    - restart nginx
+  become: yes
 
 - name: 复制自定义首页
-  copy:
-    src: custom-index.html
-    dest: /var/www/html/index.html
+  template:
+    src: custom-index.html.j2
+    dest: "{{ nginx_html_path }}/index.html"
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_group }}"
+    mode: '0644'
+  become: yes
 
 - name: 确保 Nginx 服务运行
   service:
-    name: nginx
+    name: "{{ nginx_service }}"
     state: started
     enabled: yes
+  become: yes
