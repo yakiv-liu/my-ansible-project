@@ -4,6 +4,13 @@
     name: nginx
     state: present
     update_cache: yes
+  when: not ansible_check_mode  # 在检查模式下跳过
+  notify: restart nginx
+
+- name: 模拟安装 Nginx (检查模式)
+  debug:
+    msg: "在检查模式下跳过 Nginx 安装，实际运行时会安装"
+  when: ansible_check_mode  # 只在检查模式下显示
 
 - name: 复制 Nginx 配置文件
   template:
