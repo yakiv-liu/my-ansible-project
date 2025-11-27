@@ -19,11 +19,11 @@
         dest: /etc/global-config.txt
       become: yes
 
-- name: 配置数据库服务器
-  hosts: dbservers
-  tasks:
-    - name: 安装 MySQL
-      apt:
-        name: mysql-server
-        state: present
-      become: yes
+#- name: 配置数据库服务器
+#  hosts: dbservers
+#  tasks:
+#    - name: 安装 MySQL
+#      apt:
+#        name: mysql-server
+#        state: present
+#      become: yes
