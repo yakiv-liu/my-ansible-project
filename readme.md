@@ -37,13 +37,27 @@ my-ansible-project/
 └── library/                       # 自定义模块目录
     └── custom_module.py          # 自定义 Ansible 模块
 ```
+## 🖼️ 项目展示
+
+### Web 服务器部署结果
+
+**Web1 服务器展示**
+![Web1 服务器](images/web1.png)
+
+**Web2 服务器展示**  
+![Web2 服务器](images/web2.png)
+
+### 自定义模块功能展示
+
+**自定义模块执行结果**
+![自定义模块](images/custom_module.png)
 
 ## 🚀 快速开始
 
 ### 前提条件
 
 - Ansible 2.9+
-- Python 3.6+
+- Python 2.7
 - 访问目标主机的 SSH 权限
 
 ### 基本用法
