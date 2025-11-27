@@ -1,0 +1,8 @@
+---
+# 所有主机的通用变量
+timezone: UTC
+admin_email: yakiv@qq.com
+package_list:
+  - curl
+  - wget
+  - vim

@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Yakiv Liu
+  description: Nginx role for web servers
+  company: yakiv
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - bionic
+  galaxy_tags:
+    - web
+    - nginx
+
+dependencies: []

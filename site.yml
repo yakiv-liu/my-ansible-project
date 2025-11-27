@@ -1,0 +1,29 @@
+---
+- name: 配置所有服务器
+  hosts: all
+  tasks:
+    - name: 创建 MOTD
+      template:
+        src: templates/motd.j2
+        dest: /etc/motd
+      become: yes
+
+- name: 配置 Web 服务器
+  hosts: webservers
+  roles:
+    - nginx
+  tasks:
+    - name: 复制全局配置文件
+      copy:
+        src: files/global-config.txt
+        dest: /etc/global-config.txt
+      become: yes
+
+- name: 配置数据库服务器
+  hosts: dbservers
+  tasks:
+    - name: 安装 MySQL
+      apt:
+        name: mysql-server
+        state: present
+      become: yes

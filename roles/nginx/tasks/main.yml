@@ -1,0 +1,23 @@
+---
+- name: 安装 Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: 复制 Nginx 配置文件
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify: restart nginx
+
+- name: 复制自定义首页
+  copy:
+    src: custom-index.html
+    dest: /var/www/html/index.html
+
+- name: 确保 Nginx 服务运行
+  service:
+    name: nginx
+    state: started
+    enabled: yes

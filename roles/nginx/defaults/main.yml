@@ -1,0 +1,5 @@
+---
+# 角色的默认变量（可被覆盖）
+nginx_port: 80
+max_workers: 2
+server_name: "localhost"

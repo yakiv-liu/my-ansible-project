@@ -1,0 +1,5 @@
+---
+# web1 主机的特定变量
+server_name: "web1.example.com"
+custom_port: 10081
+is_primary: true

@@ -1,0 +1,3 @@
+# Global Configuration File
+This file was deployed by Ansible
+Contact: {{ admin_email }}

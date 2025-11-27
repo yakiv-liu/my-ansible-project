@@ -1,0 +1,4 @@
+---
+# 角色特定变量
+nginx_version: "1.18"
+log_path: "/var/log/nginx"
